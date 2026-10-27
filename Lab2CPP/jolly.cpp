@@ -1,5 +1,5 @@
-#include "../LibraryCPPTemplate/vector.h"
-#include "../LibraryCPPTemplate/stack.h"
+#include "vector.h"
+#include "stack.h"
 #include <iostream>
 #include <fstream>
 #include <string>

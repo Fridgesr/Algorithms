@@ -39,20 +39,26 @@ public:
     {
         if (this == &a)
             return *this;
-        delete[] data;
-        v_size = a.v_size;
-        capacity = a.capacity;
-        if (capacity == 0)
-            data = nullptr;
-        else
-        {
-            data = new Data[capacity];
-            for (size_t i = 0; i < v_size; i++)
-            {
-                data[i] = a.data[i];
-            }
-        }
+
+        Vector temp(a);
+        swap(temp);
+
         return *this;
+    }
+
+    void swap(Vector &a)
+    {
+        Data *temp_data = data;
+        data = a.data;
+        a.data = temp_data;
+
+        size_t temp_size = v_size;
+        v_size = a.v_size;
+        a.v_size = temp_size;
+
+        size_t temp_capacity = capacity;
+        capacity = a.capacity;
+        a.capacity = temp_capacity;
     }
 
     // Deletes vector structure and internal data
@@ -88,33 +94,28 @@ public:
     // Should be O(1) on average
     void resize(size_t size)
     {
-        if (size == v_size)
-            return;
-        else if (size < v_size)
-            v_size = size;
-        else if (size <= capacity)
+        if (size > capacity)
         {
-            v_size = size;
-            return;
-        }
-        else
-        {
-            while (capacity < size)
-            {
-                if (capacity == 0)
-                    capacity = 1;
-                else
-                    capacity *= 2;
-            }
-            Data *new_data = new Data[capacity];
+            size_t new_capacity = capacity;
+
+            if (new_capacity == 0)
+                new_capacity = 1;
+
+            while (new_capacity < size)
+                new_capacity *= 2;
+
+            Data *new_data = new Data[new_capacity];
+
             for (size_t i = 0; i < v_size; i++)
-            {
                 new_data[i] = data[i];
-            }
+
             delete[] data;
+
             data = new_data;
-            v_size = size;
+            capacity = new_capacity;
         }
+
+        v_size = size;
     }
 
 private:
